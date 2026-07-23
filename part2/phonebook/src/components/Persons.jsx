@@ -1,8 +1,13 @@
 import Person from './PersonDetail'
 
-const Persons = ({persons}) => {
+const Persons = ({persons, deletePerson}) => {
     return (persons.map(person => 
-            <Person key={person.name} name={person.name} number={person.number} />
+            <Person 
+              key={person.id} 
+              name={person.name} 
+              number={person.number}
+              deletePerson={() => deletePerson(person.id)}
+            />
           ))
 }
 

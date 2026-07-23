@@ -1,9 +1,12 @@
-const PersonForm = ({newName,
-                    newNumber,
-                    setNewName,
-                    setNewNumber,
-                    setPersons,
+import { useState } from 'react'
+
+const PersonForm = ({createPerson,
+                      updatePerson,
                     persons}) => {
+    const [newName, setNewName] = useState('')
+    const [newNumber, setNewNumber] = useState('')
+    
+    
     const handleNameChange = (event) => {
         setNewName(event.target.value)
     }
@@ -11,23 +14,21 @@ const PersonForm = ({newName,
         setNewNumber(event.target.value)
     }
 
-    const addPerson = (event) => {
-
-        event.preventDefault()
-        if (persons.find((p)=> p.name===newName)) {
-        alert(`${newName} is already added to phonebook`)
-        }
-        else {
-        const personObject = {
-            name: newName,
-            number: newNumber
-        }
-
-        setPersons(persons.concat(personObject))
-        console.log(persons)
-        setNewName('')
-        setNewNumber('')
-        }
+    const addPerson = async (event) => {
+      event.preventDefault()
+      const personObject = {
+          name: newName,
+          number: newNumber
+      }
+      const existingPerson = persons.find((p)=> p.name===newName)
+      if (existingPerson) {
+        await updatePerson(existingPerson.id,personObject)
+      }
+      else {
+        await createPerson(personObject)
+      }
+      setNewName('')
+      setNewNumber('')
     }
     return (
         <form onSubmit={addPerson}>
